@@ -1,7 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import Amplify, { Analytics } from 'aws-amplify';
+import awsconfig from './aws-exports';
+
+Amplify.configure(awsconfig);
+
+
+
+const analyticsConfig = {
+  AWSPinpoint: {
+        // Amazon Pinpoint App Client ID
+        appId: 'aead37126dc4452a97afb4553f5964cd',
+        // Amazon service region
+        region: 'eu-west-2',
+        mandatorySignIn: false,
+  }
+}
+
+Analytics.configure(analyticsConfig)
+
 
 function App() {
+
+  const handleClick = () => {
+    Analytics.record({
+      name: 'Album',
+      attributes: { genre: 'Rock', year: '1989' }
+    });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +44,8 @@ function App() {
         >
           Learn React
         </a>
+
+        <button onClick={handleClick}>Click for Events</button>
       </header>
     </div>
   );
